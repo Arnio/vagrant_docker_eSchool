@@ -1,0 +1,14 @@
+### Terraform ###
+# General
+.terraform
+.ssh/
+*.json
+terraform.tfstate.backup
+terraform.tfstate
+.terraform.tfstate.lock.info
+### Vagrant ###
+# General
+.vagrant/
+
+### Vagrant Patch ###
+*.box

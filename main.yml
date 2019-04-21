@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: true
+  vars_files: /vagrant/vars.yml
+  tasks:
+    - import_tasks: /vagrant/docker.yml
+    - import_tasks: /vagrant/maven.yml
+    - import_tasks: /vagrant/jenkins.yml
+    # - import_tasks: /vagrant/sonarqube.yml
+    # - import_tasks: /vagrant/firewall_web.yml
+    # - import_tasks: /vagrant/firewall_sonar.yml
+
+# - hosts: web
+#   become: true
+#   vars_files: /vagrant/vars.yml
+#   tasks:
+#     - import_tasks: /vagrant/web.yml
+#     - import_tasks: /vagrant/firewall_web.yml
+...
