@@ -1,4 +1,8 @@
 node {
+     stage('copy Files') {
+          sh "ls "+"/vagrant/"
+          sh "cp -r "+"/vagrant/* "+"${env.WORKSPACE}"
+     }
      stage('GIT checkout') {
          git branch: 'master', url: 'https://github.com/IF-090Java/eSchool.git'
      }
@@ -7,31 +11,21 @@ node {
          def mvnCMD = "${mvnHome}/bin/mvn"
          sh label: '', script: "${mvnCMD} clean package"
      }
-     stage('build docker image') {
-         sh 'docker build -t arnio/eschool-back:1.0.0 .'
+
+     stage('build docker image DB') {
+         
+         sh 'docker build -t arnio/eschool-db:1.0.0 -f db/Dockerfile .'
+         
+     }
+     stage('build docker image backend') {
+         sh "cp "+"${env.WORKSPACE}"+"/target/*.jar "+"backend/"
+         sh 'docker build -t arnio/eschool-back:1.0.0 -f backend/Dockerfile .'
+         
+     }
+     stage('start containers ') {
+         sh 'docker run -d --name db arnio/eschool-db:1.0.0'
+         sh 'docker run -d --link db -p 8081:8080 arnio/eschool-back:1.0.0'
+         
      }
 
 }
-
-
-   def mvnHome
-   stage('Preparation') { // for display purposes
-      // Get some code from a GitHub repository
-      git 'https://github.com/jglick/simple-maven-project-with-tests.git'
-      // Get the Maven tool.
-      // ** NOTE: This 'M3' Maven tool must be configured
-      // **       in the global configuration.           
-      mvnHome = tool 'M3'
-   }
-   stage('Build') {
-      // Run the maven build
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-      }
-   }
-   stage('Results') {
-      junit '**/target/surefire-reports/TEST-*.xml'
-      archiveArtifacts 'target/*.jar'
-   }
