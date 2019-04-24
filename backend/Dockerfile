@@ -1,4 +1,4 @@
-# Pull base image.
+ Pull base image.
 FROM amazoncorretto:latest
 
 RUN \
@@ -8,5 +8,6 @@ yum update -y
 COPY ./target/eschool.jar ./app/eschool.jar
 
 COPY ./backend/application.properties ./app/application.properties
+WORKDIR ./app
 EXPOSE 8080
-CMD ["java", "-jar", "app/eschool.jar", "/app/application.properties"]
+CMD ["java", "-jar", "eschool.jar", "application.properties"]

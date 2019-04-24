@@ -158,26 +158,26 @@
 #     user: "admin"
 
 
-# - name: Download NodeSource repository
-#   get_url:
-#     url: "{{ nodesource_remote }}"
-#     dest: "{{ nodesource_local }}"
+- name: Download NodeSource repository
+  get_url:
+    url: "{{ nodesource_remote }}"
+    dest: "{{ nodesource_local }}"
 
-# - name: Add NodeSource repository
-#   command: sh "{{ nodesource_local }}"
+- name: Add NodeSource repository
+  command: sh "{{ nodesource_local }}"
 
-# - name: Install Node.js
-#   package:
-#     name: nodejs
-#     state: latest
+- name: Install Node.js
+  package:
+    name: nodejs
+    state: latest
 
-# - name: Install Node.js packages globally.
-#   npm:
-#     name: "{{ item }}"
-#     global: yes
-#   with_items:
-#      - yarn
-#      - '@angular/cli'
+- name: Install Node.js packages globally.
+  npm:
+    name: "{{ item }}"
+    global: yes
+  with_items:
+     - yarn
+     - '@angular/cli'
 
 # - name: Create job_frontend from xml-file
 #   jenkins_job:
