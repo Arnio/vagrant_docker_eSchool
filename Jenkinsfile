@@ -34,13 +34,15 @@ node {
          
      }
      stage('build docker image Frontend') {
-         sh "cp "+"${env.WORKSPACE}"+"/dist/eschool/* "+"frontend/"
-         sh 'docker build -t arnio/eschool-front:1.0.0 -f backend/Dockerfile .'
+         
+         sh 'docker build -t arnio/eschool-front:1.0.0 -f frontend/Dockerfile .'
          
      }   
      stage('start containers ') {
          sh 'docker run -d -p 3306:3306 --name db arnio/eschool-db:1.0.0'
          sh 'docker run -d --name backend --link db:db -p 8081:8080 arnio/eschool-back:1.0.0'
+         sh 'docker run -d --name frontend --link backend:backend -p 8082:80 arnio/eschool-front:1.0.0'
+
          
      }
 
