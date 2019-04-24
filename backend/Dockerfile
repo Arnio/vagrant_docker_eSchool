@@ -1,4 +1,4 @@
- Pull base image.
+# Pull base image.
 FROM amazoncorretto:latest
 
 RUN \
